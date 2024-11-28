@@ -1,5 +1,5 @@
 [package]
-name = "cti_http_public_api"
+name = "cti_http_api"
 version = "0.1.0"
 edition = "2021"
 
