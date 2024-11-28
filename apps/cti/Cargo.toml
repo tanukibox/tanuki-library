@@ -1,5 +1,5 @@
 [package]
-name = "cti"
+name = "cti_http_public_api"
 version = "0.1.0"
 edition = "2021"
 
@@ -11,6 +11,7 @@ tracing = "0.1"
 tracing-subscriber = "0.2"
 tracing-futures = "0.2"
 serde = "1.0.208"
+cti = { path = "../../libs/cti" }
 events = { path = "../../libs/shared/events" }
 
 [dev-dependencies]
