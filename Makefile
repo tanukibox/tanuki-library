@@ -34,8 +34,8 @@ format:
 
 .PHONY: docker/build
 docker/build:
-	docker build -t tanukeys-api .
+	docker build -t cti-http-api .
 
 .PHONY: docker/clean
 docker/clean:
-	docker rmi tanukeys-api
+	docker rmi cti-http-api
