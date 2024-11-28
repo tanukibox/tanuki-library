@@ -19,7 +19,7 @@ RUN apt-get install -y ca-certificates
 RUN rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-COPY --from=builder /app/target/release/tanukeys /app/
+COPY --from=builder /app/target/release/cti_http_api /app/
 
 ENV PORT=3030 \
     RUST_LOG=main_http_api=trace,kernel=trace \
