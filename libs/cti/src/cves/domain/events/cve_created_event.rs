@@ -45,11 +45,13 @@ impl DomainEvent for CveCreatedEvent {
 
 impl Clone for CveCreatedEvent {
     fn clone(&self) -> Self {
-        Self::new(
+        let mut event = Self::new(
             self.cve_id.clone(),
             self.cve_state.clone(),
             self.cve_date_published.clone(),
             self.cve_description.clone(),
-        )
+        );
+        event.occurred_on = self.occurred_on.clone();
+        return event;
     }
 }
