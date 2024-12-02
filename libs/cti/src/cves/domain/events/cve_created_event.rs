@@ -42,3 +42,14 @@ impl DomainEvent for CveCreatedEvent {
         "com.tanukibox.cti.cve.created@1.0.0".to_string()
     }
 }
+
+impl Clone for CveCreatedEvent {
+    fn clone(&self) -> Self {
+        Self::new(
+            self.cve_id.clone(),
+            self.cve_state.clone(),
+            self.cve_date_published.clone(),
+            self.cve_description.clone(),
+        )
+    }
+}
