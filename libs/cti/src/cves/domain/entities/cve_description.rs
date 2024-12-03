@@ -22,7 +22,7 @@ impl CveDescription {
 
 impl Clone for CveDescription {
     fn clone(&self) -> Self {
-        Self::new(self.value.clone()).unwrap()
+        Self::new(&self.value).unwrap()
     }
 }
 
