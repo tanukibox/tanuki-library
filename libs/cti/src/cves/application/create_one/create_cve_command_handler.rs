@@ -4,7 +4,7 @@ use async_trait::async_trait;
 use cqrs::domain::{command::Command, command_bus_response::CommandBusResponse, command_handler::CommandHandler};
 use events::domain::event_bus::EventBus;
 
-use crate::cves::{application::cve_command_response::CveCommandResponse, domain::{entities::cve_id::CveId, repositories::cve_repository::CveRepository}};
+use crate::cves::{application::cve_command_response::CveCommandResponse, domain::{entities::{cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate, cve_state::CveState}, repositories::cve_repository::CveRepository}};
 
 use super::{create_cve_command::CreateCveCommand, cve_creator::CveCreator};
 
@@ -29,14 +29,25 @@ impl <R: CveRepository, E: EventBus> CommandHandler for CreateCveCommandHandler<
             Err(err) => return CveCommandResponse::boxed_err(err)  
         };
 
+        let state = match CveState::from_optional(&command.state) {
+            Ok(state) => state,
+            Err(err) => return CveCommandResponse::boxed_err(err)  
+        };
 
-        // let res = self.creator.run(id).await;
+        let publication_date = match CvePublicationDate::from_optional(&command.date_published) {
+            Ok(publication_date) => publication_date,
+            Err(err) => return CveCommandResponse::boxed_err(err)  
+        };
 
-        /*match res {
+        let description = match CveDescription::new(&command.description) {
+            Ok(description) => description,
+            Err(err) => return CveCommandResponse::boxed_err(err) 
+        };
+
+        match self.creator.run(id, state, publication_date, description).await {
             Ok(_) => CveCommandResponse::boxed_ok(),
-            Err(err) => CryptoKeyCommandResponse::boxed_err(err)
-        }*/
-        unimplemented!()
+            Err(err) => CveCommandResponse::boxed_err(err)
+        }
     }
     
     fn subscribet_to(&self) -> String {
