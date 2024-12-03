@@ -1,5 +1,5 @@
 use crate::shared::domain::errors::DomainError;
-use std::hash::{Hash, Hasher};
+use std::{hash::{Hash, Hasher}, path::Display};
 
 #[derive(Debug)]
 pub struct CveId {
@@ -26,7 +26,7 @@ impl CveId {
         self.value.clone()
     }
 
-    pub fn ref_value(&self) -> &String {
+    pub fn rvalue(&self) -> &String {
         &self.value
     }
 }
@@ -48,5 +48,11 @@ impl Eq for CveId {}
 impl Hash for CveId {
     fn hash<H: Hasher>(&self, state: &mut H) {
         self.value.hash(state);
+    }
+}
+
+impl std::fmt::Display for CveId {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.value)
     }
 }

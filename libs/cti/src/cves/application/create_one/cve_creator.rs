@@ -23,16 +23,16 @@ impl<R: CveRepository, E: EventBus> CveCreator<R, E> {
         date_published: CvePublicationDate,
         description: CveDescription,
     ) -> Result<(), DomainError> {
-        debug!("Starting CVE creation");
+        debug!("Starting CVE creation for {}.", id);
         let key = Cve::new(&id, &state, &date_published, &description);
         let res = self.repository.create_one(&key).await;
         if res.is_err() {
-            debug!("Error creating CVE with id: {}", id.value());
+            debug!("Error creating CVE with id: {}.", id);
             return Err(res.err().unwrap());
         }
         let created_event = CveCreatedEvent::new_shared(&id, &state, &date_published, &description);
         self.event_bus.publish(created_event).await;
-        debug!("CVE with id: {} created", id.value());
+        debug!("CVE with id: {} created.", id);
         Ok(())
     }
 }
