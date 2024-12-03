@@ -7,8 +7,18 @@ pub struct CveState {
 }
 
 impl CveState {
-    pub fn new(value: String) -> Result<Self, DomainError> {
-        Ok(Self { value })
+    pub fn new(value: &String) -> Result<Self, DomainError> {
+        Ok(Self { value: value.clone() })
+    }
+
+    pub fn from_optional(value: &Option<String>) -> Result<Self, DomainError> {
+        if value.is_none() {
+            return Err(DomainError::ValueObjectError {
+                value: "CVE state must not be null".to_string(),
+            });
+        }
+        let value = value.as_ref().unwrap();
+        Self::new(&value)
     }
 
     pub fn value(&self) -> String {
@@ -22,7 +32,7 @@ impl CveState {
 
 impl Clone for CveState {
     fn clone(&self) -> Self {
-        Self::new(self.value.clone()).unwrap()
+        Self::new(&self.value).unwrap()
     }
 }
 
