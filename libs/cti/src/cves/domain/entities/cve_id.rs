@@ -7,15 +7,19 @@ pub struct CveId {
 }
 
 impl CveId {
-    pub fn new(id: Option<String>) -> Result<Self, DomainError> {
-        if id.is_none() {
-            return Err(DomainError::ValueObjectError { value: "CVE id must not be empty".to_string() })
-        }
-        let id = id.unwrap();
+    pub fn new(id: &String) -> Result<Self, DomainError> {
         if id.contains(" ") {
             return Err(DomainError::ValueObjectError { value: "CVE id must not contain blank spaces".to_string() })
         }
-        Ok(Self { value: id })
+        Ok(Self { value: id.clone() })
+    }
+
+    pub fn from_optional(id: &Option<String>) -> Result<Self, DomainError> {
+        if id.is_none() {
+            return Err(DomainError::ValueObjectError { value: "CVE id must not be empty".to_string() })
+        }
+        let id = id.as_ref().unwrap();
+        Self::new(&id)
     }
 
     pub fn value(&self) -> String {
@@ -29,7 +33,7 @@ impl CveId {
 
 impl Clone for CveId {
     fn clone(&self) -> Self {
-        Self::new(Some(self.value.clone())).unwrap()
+        Self::new(&self.value).unwrap()
     }
 }
 
