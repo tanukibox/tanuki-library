@@ -1,4 +1,3 @@
-
 use cqrs::domain::command_bus_response::CommandBusResponse;
 
 use crate::shared::domain::errors::DomainError;
