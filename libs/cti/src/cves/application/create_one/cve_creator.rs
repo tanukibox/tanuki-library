@@ -17,21 +17,21 @@ impl<R: CveRepository, E: EventBus> CryptoKeyCreator<R, E> {
         CryptoKeyCreator { repository: cve_repository, event_bus }
     }
 
-    pub async fn run(
-        &self,
-        id: CveId,
+    pub async fn run<'a>(
+        &'a self,
+        id: &'a CveId,
         state: CveState,
         date_published: CvePublicationDate,
         description: CveDescription,
     ) -> Result<(), DomainError> {
         debug!("Starting CVE creation");
-        let key = Cve::new(id.clone(), state.clone(), date_published.clone(), description.clone());
+        let key = Cve::new(&id, state.clone(), date_published.clone(), description.clone());
         let res = self.repository.create_one(&key).await;
         if res.is_err() {
             debug!("Error creating CVE with id: {}", id.value());
             return Err(res.err().unwrap());
         }
-        let created_event = CveCreatedEvent::new_shared(id.clone(), state, date_published, description);
+        let created_event = CveCreatedEvent::new_shared(&id, state, date_published, description);
         self.event_bus.publish(created_event).await;
         debug!("CVE with id: {} created", id.value());
         Ok(())
