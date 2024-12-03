@@ -14,6 +14,10 @@ impl CveState {
     pub fn value(&self) -> String {
         self.value.clone()
     }
+
+    pub fn ref_value(&self) -> &String {
+        &self.value
+    }
 }
 
 impl Clone for CveState {

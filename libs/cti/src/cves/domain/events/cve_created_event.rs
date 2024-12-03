@@ -6,21 +6,19 @@ use crate::cves::domain::entities::{cve_description::CveDescription, cve_id::Cve
 
 pub struct CveCreatedEvent<'a> {
     pub id: String,
-    
     pub cve_id: &'a CveId,
-    pub cve_state: CveState,
-    pub cve_date_published: CvePublicationDate,
-    pub cve_description: CveDescription,
-
+    pub cve_state: &'a CveState,
+    pub cve_date_published: &'a CvePublicationDate,
+    pub cve_description: &'a CveDescription,
     pub occurred_on: String,
 }
 
 impl<'a> CveCreatedEvent<'a> {
     pub fn new(
         cve_id: &'a CveId, 
-        cve_state: CveState, 
-        cve_date_published: CvePublicationDate, 
-        cve_description: CveDescription,
+        cve_state: &'a CveState, 
+        cve_date_published: &'a CvePublicationDate, 
+        cve_description: &'a CveDescription,
     ) -> Self {
         let id = uuid::Uuid::new_v4().to_string();
         let occurred_on = chrono::Utc::now().to_rfc3339();
@@ -28,10 +26,10 @@ impl<'a> CveCreatedEvent<'a> {
     }
 
     pub fn new_shared(
-        cve_id: &'a CveId, 
-        cve_state: CveState, 
-        cve_date_published: CvePublicationDate, 
-        cve_description: CveDescription,
+        cve_id: &'a CveId,
+        cve_state: &'a CveState,
+        cve_date_published: &'a CvePublicationDate,
+        cve_description: &'a CveDescription,
     ) -> std::sync::Arc<Self> {
         std::sync::Arc::new(Self::new(cve_id, cve_state, cve_date_published, cve_description))
     }
@@ -47,9 +45,9 @@ impl<'a> Clone for CveCreatedEvent<'a> {
     fn clone(&self) -> Self {
         let mut event = Self::new(
             self.cve_id,
-            self.cve_state.clone(),
-            self.cve_date_published.clone(),
-            self.cve_description.clone(),
+            self.cve_state,
+            self.cve_date_published,
+            self.cve_description,
         );
         event.occurred_on = self.occurred_on.clone();
         return event;

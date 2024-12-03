@@ -12,7 +12,6 @@ impl CreateCveCommand {
     pub const COMMAND_TYPE: &'static str = "com.tanukibox.cti.cves.create-one@1.0.0";
 
     pub fn new(id: Option<String>, state: Option<String>, date_published: Option<String>, description: Option<String>) -> CreateCveCommand {
-            
         CreateCveCommand {
             id,
             state,

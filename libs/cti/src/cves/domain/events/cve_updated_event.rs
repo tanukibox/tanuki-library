@@ -4,7 +4,7 @@ use events::domain::domain_event::DomainEvent;
 use crate::cves::domain::entities::{cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate, cve_state::CveState};
 
 
-pub struct CveCreatedEvent {
+pub struct CveUpdatedEvent {
     pub id: String,
     
     pub cve_id: CveId,
@@ -18,7 +18,7 @@ pub struct CveCreatedEvent {
     pub occurred_on: String,
 }
 
-impl CveCreatedEvent {
+impl CveUpdatedEvent {
     pub fn new(
         cve_id: CveId,
         cve_state: CveState,
@@ -46,13 +46,13 @@ impl CveCreatedEvent {
     }
 }
 
-impl DomainEvent for CveCreatedEvent {
+impl DomainEvent for CveUpdatedEvent {
     fn event_type(&self) -> String {
         "com.tanukibox.cti.cve.updated@1.0.0".to_string()
     }
 }
 
-impl Clone for CveCreatedEvent {
+impl Clone for CveUpdatedEvent {
     fn clone(&self) -> Self {
         let mut event = Self::new(
             self.cve_id.clone(),

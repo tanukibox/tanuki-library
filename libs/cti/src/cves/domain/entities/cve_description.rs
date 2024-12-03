@@ -3,16 +3,20 @@ use std::hash::{Hash, Hasher};
 
 #[derive(Debug)]
 pub struct CveDescription {
-    value: String,
+    value: Option<String>,
 }
 
 impl CveDescription {
-    pub fn new(value: String) -> Result<Self, DomainError> {
+    pub fn new(value: Option<String>) -> Result<Self, DomainError> {
         Ok(Self { value })
     }
 
-    pub fn value(&self) -> String {
+    pub fn value(&self) -> Option<String> {
         self.value.clone()
+    }
+
+    pub fn ref_value(&self) -> &Option<String> {
+        &self.value
     }
 }
 

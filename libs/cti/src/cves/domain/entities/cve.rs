@@ -5,18 +5,17 @@ use super::{cve_description::CveDescription, cve_id::CveId, cve_publication_date
 
 pub struct Cve<'a> {
     pub id: &'a CveId,
-    pub state: CveState,
-    pub date_published: CvePublicationDate,
-    
-    pub description: CveDescription,
+    pub state: &'a CveState,
+    pub date_published: &'a CvePublicationDate,
+    pub description: &'a CveDescription,
 }
 
 impl<'a> Cve<'a> {
     pub fn new(
         id: &'a CveId, 
-        state: CveState, 
-        date_published: CvePublicationDate, 
-        description: CveDescription
+        state: &'a CveState, 
+        date_published: &'a CvePublicationDate, 
+        description: &'a CveDescription
     ) -> Self {
         Self {
             id,
@@ -37,9 +36,9 @@ impl<'a> Clone for Cve<'a> {
     fn clone(&self) -> Self {
         Self::new(
             self.id,
-            self.state.clone(),
-            self.date_published.clone(),
-            self.description.clone(),
+            self.state,
+            self.date_published,
+            self.description,
         )
     }
 }
