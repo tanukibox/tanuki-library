@@ -1,5 +1,5 @@
 use crate::shared::domain::errors::DomainError;
-use std::{hash::{Hash, Hasher}, path::Display};
+use std::hash::{Hash, Hasher};
 
 #[derive(Debug)]
 pub struct CveId {
