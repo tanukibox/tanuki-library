@@ -33,7 +33,7 @@ pub fn parse_to_domain(dto: &CveJsonDto) -> Result<Cve, DomainError> {
     let description = CveDescription::new(&dto.description)
         .or_else(|e| Err(e)).unwrap();
     
-    let cve = Cve::new(&id, &state, &date_published, &description);
+    let cve = Cve::new(id, state, date_published, description);
 
     Ok(cve)
 }

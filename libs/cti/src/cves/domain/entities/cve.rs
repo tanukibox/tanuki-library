@@ -11,18 +11,22 @@ pub struct Cve {
 }
 
 impl Cve {
-    pub fn new(
+    pub fn from(
         id: &CveId, 
         state: &CveState, 
         date_published: &CvePublicationDate, 
         description: &CveDescription
     ) -> Self {
-        Self {
-            id: id.clone(),
-            state: state.clone(),
-            date_published: date_published.clone(),
-            description: description.clone(),
-        }
+        Self::new(id.clone(), state.clone(), date_published.clone(), description.clone())
+    }
+
+    pub fn new(
+        id: CveId, 
+        state: CveState, 
+        date_published: CvePublicationDate, 
+        description: CveDescription
+    ) -> Self {
+        Self { id, state, date_published, description }
     }
 
 }
@@ -35,7 +39,7 @@ impl AggregateRoot for Cve {
 
 impl Clone for Cve {
     fn clone(&self) -> Self {
-        Self::new(
+        Self::from(
             &self.id,
             &self.state,
             &self.date_published,
