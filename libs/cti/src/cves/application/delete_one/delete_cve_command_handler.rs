@@ -32,12 +32,12 @@ impl <R: CveRepository, E: EventBus> CommandHandler for DeleteCveCommandHandler<
 
         match self.deleter.run(id).await {
             Ok(_) => CveCommandResponse::boxed_ok(),
-            Err(err) => CveCommandResponse::boxed_err(err)
+            Err(err) => CveCommandResponse::boxed_err(err),
         }
     }
     
     fn subscribet_to(&self) -> String {
-        return DeleteCveCommand::COMMAND_TYPE.to_string();
+        return DeleteCveCommand::COMMAND_TYPE.to_string(); 
     }
 }
 
