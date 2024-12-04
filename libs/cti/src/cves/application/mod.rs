@@ -5,3 +5,4 @@ pub mod update_one;
 pub mod delete_one;
 
 pub mod cve_command_response;
+pub mod cve_query_response;
