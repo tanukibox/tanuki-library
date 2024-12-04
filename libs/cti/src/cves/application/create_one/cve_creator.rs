@@ -23,8 +23,8 @@ impl<R: CveRepository, E: EventBus> CveCreator<R, E> {
         description: CveDescription,
     ) -> Result<(), DomainError> {
         tracing::debug!("Starting CVE creation for {}.", id);
-        let key = Cve::new(&id, &state, &date_published, &description);
-        let res = self.repository.create_one(&key).await;
+        let cve = Cve::new(&id, &state, &date_published, &description);
+        let res = self.repository.create_one(&cve).await;
         if res.is_err() {
             tracing::info!("Error creating CVE with id: {}.", id);
             return Err(res.err().unwrap());
