@@ -3,7 +3,7 @@ pub mod v1;
 use std::sync::{atomic::{AtomicU16, Ordering}, Arc};
 
 use actix_web::{web::Data, App, HttpServer};
-use cqrs::{domain::{command::{self, Command}, command_bus::CommandBus, query_bus::QueryBus}, infrastructure::inmemory::{inmemory_command_bus::InMemoryCommandBus, inmemory_query_bus::InMemoryQueryBus}};
+use cqrs::{domain::{command_bus::CommandBus, query_bus::QueryBus}, infrastructure::inmemory::{inmemory_command_bus::InMemoryCommandBus, inmemory_query_bus::InMemoryQueryBus}};
 use cti::cves::{application::{create_one::{create_cve_command_handler::CreateCveCommandHandler, cve_creator::CveCreator}, delete_one::cve_deleter::CveDeleter, find_one::{cve_finder::CveFinder, find_cve_q_handler::FindCveQueryHandler}}, infrastructure::sqlx::sqlx_postgres_cve_repository::SqlxPostgresCveRepository};
 use events::infrastructure::inmemory::inmemory_event_bus::InMemoryEventBus;
 use tracing::{self as logger};
