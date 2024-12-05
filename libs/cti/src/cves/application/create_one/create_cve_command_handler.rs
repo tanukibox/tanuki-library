@@ -10,11 +10,11 @@ use super::{create_cve_command::CreateCveCommand, cve_creator::CveCreator};
 
 
 pub struct CreateCveCommandHandler<R: CveRepository, E: EventBus> {
-    creator: Arc<CveCreator<R, E>>,
+    creator: CveCreator<R, E>,
 }
 
 impl<R: CveRepository, E: EventBus>  CreateCveCommandHandler<R, E> {
-    pub fn new(creator: Arc<CveCreator<R, E>>) -> CreateCveCommandHandler<R, E> {
+    pub fn new(creator: CveCreator<R, E>) -> CreateCveCommandHandler<R, E> {
         CreateCveCommandHandler { creator }
     }
 }
