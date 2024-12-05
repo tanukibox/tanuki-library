@@ -1,6 +1,6 @@
 use actix_web::{web, HttpRequest, HttpResponse};
 use cqrs::domain::command_bus::CommandBus;
-use cti::{cves::{application::{create_one::create_cve_command::CreateCveCommand, cve_command_response::CveCommandResponse}, domain::repositories::cve_repository::CveRepository, infrastructure::dtos::cve_json_dto::{parse_to_domain, CveJsonDto}}, shared::domain::errors::DomainError};
+use cti::{cves::{application::{create_one::create_cve_command::CreateCveCommand, cve_command_response::CveCommandResponse}, domain::repositories::cve_repository::CveRepository, infrastructure::dtos::cve_json_dto::CveJsonDto}, shared::domain::errors::DomainError};
 use events::domain::event_bus::EventBus;
 
 pub async fn controller<R: CveRepository, E: EventBus>(

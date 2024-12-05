@@ -1,4 +1,3 @@
-use std::sync::Arc;
 
 use async_trait::async_trait;
 use cqrs::domain::{command::Command, command_bus_response::CommandBusResponse, command_handler::CommandHandler};
