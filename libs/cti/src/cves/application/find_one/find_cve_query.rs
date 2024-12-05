@@ -13,6 +13,10 @@ impl FindCveQuery {
     pub fn new(id: Option<String>) -> FindCveQuery {
         FindCveQuery { id }
     }
+
+    pub fn new_boxed(id: Option<String>) -> Box<dyn Query> {
+        Box::new(FindCveQuery::new(id))
+    }
 }
 
 impl Query for FindCveQuery {
