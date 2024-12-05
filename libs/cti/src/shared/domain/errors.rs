@@ -14,7 +14,7 @@ pub enum DomainError {
     ValueObjectError { value: String },
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    //                     CVE ERRORS
+    //                      CVE ERRORS
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     #[error("Cve with id <{id:?}> already exists.")]
