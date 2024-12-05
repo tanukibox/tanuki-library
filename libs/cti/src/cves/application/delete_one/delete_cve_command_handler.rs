@@ -1,5 +1,3 @@
-use std::sync::Arc;
-
 use async_trait::async_trait;
 use cqrs::domain::{command::Command, command_bus_response::CommandBusResponse, command_handler::CommandHandler};
 use events::domain::event_bus::EventBus;
@@ -10,11 +8,11 @@ use super::{cve_deleter::CveDeleter, delete_cve_command::DeleteCveCommand};
 
 
 pub struct DeleteCveCommandHandler<R: CveRepository, E: EventBus> {
-    deleter: Arc<CveDeleter<R, E>>,
+    deleter: CveDeleter<R, E>,
 }
 
 impl<R: CveRepository, E: EventBus>  DeleteCveCommandHandler<R, E> {
-    pub fn new(deleter: Arc<CveDeleter<R, E>>) -> DeleteCveCommandHandler<R, E> {
+    pub fn new(deleter: CveDeleter<R, E>) -> DeleteCveCommandHandler<R, E> {
         DeleteCveCommandHandler { deleter }
     }
 }
