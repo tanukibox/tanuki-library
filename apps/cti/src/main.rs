@@ -68,6 +68,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(query_bus_ref.clone())
             .app_data(command_bus_ref.clone())
             .configure(health_controller::router)
+            .configure(v1::cves::router::<SqlxPostgresCveRepository, InMemoryEventBus>)
     })
     .bind(&address)
     .unwrap_or_else(|err| {
