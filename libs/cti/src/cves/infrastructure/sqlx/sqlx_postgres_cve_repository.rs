@@ -36,7 +36,7 @@ impl SqlxPostgresCveRepository {
 impl CveRepository for SqlxPostgresCveRepository {
 
     async fn find_by_id(&self, id: &CveId) -> Result<Cve, DomainError> {
-        let query = "SELECT * FROM tanukilibrary.cves WHERE id = $1";
+        let query = "SELECT * FROM cti.cves WHERE id = $1";
         let query = sqlx::query_as(query)
             .bind(id.value());
         let key_res: Result<SqlxCve, sqlx::Error> = query.fetch_one(&self.pool).await;
@@ -54,7 +54,7 @@ impl CveRepository for SqlxPostgresCveRepository {
 
     async fn create_one(&self, cve: &Cve) -> Result<(), DomainError> {
         let sql_cve: SqlxCve = SqlxCve::from_domain(cve);
-        let query = "INSERT INTO tanukilibrary.cves (id, state, date_published, description) VALUES ($1, $2, $3, $4)";
+        let query = "INSERT INTO cti.cves (id, state, date_published, description) VALUES ($1, $2, $3, $4)";
         let res = sqlx::query(query)
             .bind(&sql_cve.id)
             .bind(&sql_cve.state)
@@ -76,7 +76,7 @@ impl CveRepository for SqlxPostgresCveRepository {
 
     async fn update_one(&self, cve: &Cve) -> Result<(), DomainError> {
         let sql_cve: SqlxCve = SqlxCve::from_domain(cve);
-        let query = "UPDATE tanukilibrary.cves SET state = $1, date_published = $2, description = $3 WHERE id = $3";
+        let query = "UPDATE cti.cves SET state = $1, date_published = $2, description = $3 WHERE id = $3";
         let res = sqlx::query(query)
             .bind(&sql_cve.state)
             .bind(&sql_cve.date_published)
@@ -98,7 +98,7 @@ impl CveRepository for SqlxPostgresCveRepository {
     }
 
     async fn delete_one(&self, id: &CveId) -> Result<(), DomainError> {
-        let query = "DELETE FROM tanukilibrary.cves WHERE id = $1";
+        let query = "DELETE FROM cti.cves WHERE id = $1";
         let res = sqlx::query(query)
             .bind(id.value())
             .fetch_optional(&self.pool)
