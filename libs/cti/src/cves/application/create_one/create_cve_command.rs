@@ -19,6 +19,10 @@ impl CreateCveCommand {
             description,
         }
     }
+
+    pub fn new_boxed(id: Option<String>, state: Option<String>, date_published: Option<String>, description: Option<String>) -> Box<dyn Command> {
+        Box::new(CreateCveCommand::new(id, state, date_published, description))
+    }
 }
 
 impl Command for CreateCveCommand {

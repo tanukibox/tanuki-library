@@ -35,6 +35,10 @@ impl CveCommandResponse {
     pub fn is_ok(&self) -> bool {
         self.error.is_none()
     }
+
+    pub fn error(&self) -> &DomainError {
+        self.error.as_ref().unwrap()
+    }
 }
 
 impl CommandBusResponse for CveCommandResponse {

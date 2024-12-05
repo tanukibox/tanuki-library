@@ -13,6 +13,7 @@ tracing-futures = "0.2"
 serde = "1.0.208"
 cti = { path = "../../libs/cti" }
 events = { path = "../../libs/shared/events" }
+cqrs = { path = "../../libs/shared/cqrs" }
 
 [dev-dependencies]
 actix-rt = "2"
