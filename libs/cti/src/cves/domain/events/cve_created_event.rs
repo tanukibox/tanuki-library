@@ -1,8 +1,9 @@
-
 use events::domain::domain_event::DomainEvent;
 
-use crate::cves::domain::entities::{cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate, cve_state::CveState};
-
+use crate::cves::domain::entities::{
+    cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate,
+    cve_state::CveState,
+};
 
 pub struct CveCreatedEvent {
     pub id: String,
@@ -15,20 +16,20 @@ pub struct CveCreatedEvent {
 
 impl CveCreatedEvent {
     pub fn new(
-        cve_id: &CveId, 
-        cve_state: &CveState, 
-        cve_date_published: &CvePublicationDate, 
+        cve_id: &CveId,
+        cve_state: &CveState,
+        cve_date_published: &CvePublicationDate,
         cve_description: &CveDescription,
     ) -> Self {
         let id = uuid::Uuid::new_v4().to_string();
         let occurred_on = chrono::Utc::now().to_rfc3339();
-        Self { 
-            id, 
-            cve_id: cve_id.clone(), 
-            cve_state: cve_state.clone(), 
-            cve_date_published: cve_date_published.clone(), 
+        Self {
+            id,
+            cve_id: cve_id.clone(),
+            cve_state: cve_state.clone(),
+            cve_date_published: cve_date_published.clone(),
             cve_description: cve_description.clone(),
-            occurred_on 
+            occurred_on,
         }
     }
 
@@ -38,7 +39,12 @@ impl CveCreatedEvent {
         cve_date_published: &CvePublicationDate,
         cve_description: &CveDescription,
     ) -> std::sync::Arc<Self> {
-        std::sync::Arc::new(Self::new(cve_id, cve_state, cve_date_published, cve_description))
+        std::sync::Arc::new(Self::new(
+            cve_id,
+            cve_state,
+            cve_date_published,
+            cve_description,
+        ))
     }
 }
 

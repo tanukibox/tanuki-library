@@ -2,7 +2,6 @@ use cqrs::domain::command_bus_response::CommandBusResponse;
 
 use crate::shared::domain::errors::DomainError;
 
-
 pub struct CveCommandResponse {
     pub error: Option<DomainError>,
 }
@@ -45,7 +44,7 @@ impl CommandBusResponse for CveCommandResponse {
     fn response_type(&self) -> String {
         Self::RES_TYPE.to_string()
     }
-    
+
     fn as_any(&self) -> &dyn std::any::Any {
         self
     }

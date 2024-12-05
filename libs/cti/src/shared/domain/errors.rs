@@ -2,11 +2,9 @@ use thiserror::Error;
 
 #[derive(Error, Debug, Clone)]
 pub enum DomainError {
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //                    GENERAL ERRORS
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
     #[error("Unknown error.")]
     Unknown,
 
@@ -16,7 +14,6 @@ pub enum DomainError {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     //                      CVE ERRORS
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
     #[error("Cve with id <{id:?}> already exists.")]
     CveAlreadyExists { id: String },
 
@@ -25,5 +22,4 @@ pub enum DomainError {
 
     #[error("Cve with id <{id:?}> not authorized.")]
     CveNotAuthorized { id: String },
-    
 }

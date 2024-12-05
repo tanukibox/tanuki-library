@@ -1,6 +1,5 @@
 use cqrs::domain::command::Command;
 
-
 pub struct CreateCveCommand {
     pub id: Option<String>,
     pub state: Option<String>,
@@ -11,7 +10,12 @@ pub struct CreateCveCommand {
 impl CreateCveCommand {
     pub const COMMAND_TYPE: &'static str = "com.tanukibox.cti.cves.create-one@1.0.0";
 
-    pub fn new(id: Option<String>, state: Option<String>, date_published: Option<String>, description: Option<String>) -> CreateCveCommand {
+    pub fn new(
+        id: Option<String>,
+        state: Option<String>,
+        date_published: Option<String>,
+        description: Option<String>,
+    ) -> CreateCveCommand {
         CreateCveCommand {
             id,
             state,
@@ -20,8 +24,18 @@ impl CreateCveCommand {
         }
     }
 
-    pub fn new_boxed(id: Option<String>, state: Option<String>, date_published: Option<String>, description: Option<String>) -> Box<dyn Command> {
-        Box::new(CreateCveCommand::new(id, state, date_published, description))
+    pub fn new_boxed(
+        id: Option<String>,
+        state: Option<String>,
+        date_published: Option<String>,
+        description: Option<String>,
+    ) -> Box<dyn Command> {
+        Box::new(CreateCveCommand::new(
+            id,
+            state,
+            date_published,
+            description,
+        ))
     }
 }
 
@@ -29,7 +43,7 @@ impl Command for CreateCveCommand {
     fn command_type(&self) -> String {
         CreateCveCommand::COMMAND_TYPE.to_string()
     }
-    
+
     fn as_any(&self) -> &dyn std::any::Any {
         self
     }

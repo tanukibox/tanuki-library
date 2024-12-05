@@ -2,7 +2,6 @@ use std::any::Any;
 
 use cqrs::domain::query::Query;
 
-
 pub struct FindCveQuery {
     pub id: Option<String>,
 }
@@ -23,7 +22,7 @@ impl Query for FindCveQuery {
     fn get_type(&self) -> String {
         FindCveQuery::QUERY_TYPE.to_string()
     }
-    
+
     fn as_any(&self) -> &dyn Any {
         self
     }

@@ -1,4 +1,7 @@
-use crate::{cves::domain::entities::{cve::Cve, cve_id::CveId}, shared::domain::errors::DomainError};
+use crate::{
+    cves::domain::entities::{cve::Cve, cve_id::CveId},
+    shared::domain::errors::DomainError,
+};
 use async_trait::async_trait;
 
 #[async_trait]

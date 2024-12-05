@@ -8,7 +8,9 @@ pub struct CveDescription {
 
 impl CveDescription {
     pub fn new(value: &Option<String>) -> Result<Self, DomainError> {
-        Ok(Self { value: value.clone() })
+        Ok(Self {
+            value: value.clone(),
+        })
     }
 
     pub fn value(&self) -> Option<String> {

@@ -2,7 +2,6 @@ use cqrs::domain::query_bus_response::QueryBusResponse;
 
 use crate::{cves::domain::entities::cve::Cve, shared::domain::errors::DomainError};
 
-
 pub struct CveQueryResponse {
     pub error: Option<DomainError>,
     pub cve: Option<Cve>,
@@ -12,7 +11,10 @@ impl CveQueryResponse {
     pub const RES_TYPE: &'static str = "CveQueryResponse";
 
     pub fn ok(cve: Cve) -> CveQueryResponse {
-        CveQueryResponse { error: None, cve: Some(cve) }
+        CveQueryResponse {
+            error: None,
+            cve: Some(cve),
+        }
     }
 
     pub fn boxed_ok(cve: Cve) -> Box<CveQueryResponse> {
@@ -21,7 +23,10 @@ impl CveQueryResponse {
     }
 
     pub fn err(error: DomainError) -> CveQueryResponse {
-        CveQueryResponse { error: Some(error), cve: None }
+        CveQueryResponse {
+            error: Some(error),
+            cve: None,
+        }
     }
 
     pub fn boxed_err(error: DomainError) -> Box<CveQueryResponse> {
@@ -42,7 +47,7 @@ impl QueryBusResponse for CveQueryResponse {
     fn response_type(&self) -> String {
         Self::RES_TYPE.to_string()
     }
-    
+
     fn as_any(&self) -> &dyn std::any::Any {
         self
     }

@@ -1,12 +1,13 @@
-
 use events::domain::domain_event::DomainEvent;
 
-use crate::cves::domain::entities::{cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate, cve_state::CveState};
-
+use crate::cves::domain::entities::{
+    cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate,
+    cve_state::CveState,
+};
 
 pub struct CveDeletedEvent {
     pub id: String,
-    
+
     pub cve_id: CveId,
     pub cve_state: CveState,
     pub cve_date_published: CvePublicationDate,
@@ -17,23 +18,35 @@ pub struct CveDeletedEvent {
 
 impl CveDeletedEvent {
     pub fn new(
-        cve_id: CveId, 
-        cve_state: CveState, 
-        cve_date_published: CvePublicationDate, 
+        cve_id: CveId,
+        cve_state: CveState,
+        cve_date_published: CvePublicationDate,
         cve_description: CveDescription,
     ) -> Self {
         let id = uuid::Uuid::new_v4().to_string();
         let occurred_on = chrono::Utc::now().to_rfc3339();
-        Self { id, cve_id, cve_state, cve_date_published, cve_description, occurred_on }
+        Self {
+            id,
+            cve_id,
+            cve_state,
+            cve_date_published,
+            cve_description,
+            occurred_on,
+        }
     }
 
     pub fn new_shared(
-        cve_id: CveId, 
-        cve_state: CveState, 
-        cve_date_published: CvePublicationDate, 
+        cve_id: CveId,
+        cve_state: CveState,
+        cve_date_published: CvePublicationDate,
         cve_description: CveDescription,
     ) -> std::sync::Arc<Self> {
-        std::sync::Arc::new(Self::new(cve_id, cve_state, cve_date_published, cve_description))
+        std::sync::Arc::new(Self::new(
+            cve_id,
+            cve_state,
+            cve_date_published,
+            cve_description,
+        ))
     }
 }
 

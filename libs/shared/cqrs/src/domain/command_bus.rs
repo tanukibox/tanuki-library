@@ -2,8 +2,9 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 
-use super::{command::Command, command_bus_response::CommandBusResponse, command_handler::CommandHandler};
-
+use super::{
+    command::Command, command_bus_response::CommandBusResponse, command_handler::CommandHandler,
+};
 
 #[async_trait]
 pub trait CommandBus: Send + Sync + 'static {

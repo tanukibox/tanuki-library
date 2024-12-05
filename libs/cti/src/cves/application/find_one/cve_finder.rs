@@ -1,6 +1,12 @@
 use tracing::debug;
 
-use crate::{cves::domain::{entities::{cve::Cve, cve_id::CveId}, repositories::cve_repository::CveRepository}, shared::domain::errors::DomainError};
+use crate::{
+    cves::domain::{
+        entities::{cve::Cve, cve_id::CveId},
+        repositories::cve_repository::CveRepository,
+    },
+    shared::domain::errors::DomainError,
+};
 use std::sync::Arc;
 
 pub struct CveFinder<R: CveRepository> {
@@ -9,7 +15,9 @@ pub struct CveFinder<R: CveRepository> {
 
 impl<R: CveRepository> CveFinder<R> {
     pub fn new(cve_repository: Arc<R>) -> CveFinder<R> {
-        CveFinder { repository: cve_repository }
+        CveFinder {
+            repository: cve_repository,
+        }
     }
 
     pub async fn run(&self, id: CveId) -> Result<Cve, DomainError> {

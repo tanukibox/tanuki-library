@@ -8,7 +8,9 @@ pub struct CvePublicationDate {
 
 impl CvePublicationDate {
     pub fn new(value: &String) -> Result<Self, DomainError> {
-        Ok(Self { value: value.clone() })
+        Ok(Self {
+            value: value.clone(),
+        })
     }
 
     pub fn from_optional(value: &Option<String>) -> Result<Self, DomainError> {

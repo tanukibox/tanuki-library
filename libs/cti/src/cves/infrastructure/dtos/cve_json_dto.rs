@@ -1,8 +1,8 @@
 use crate::cves::domain::entities::cve::Cve;
 use crate::cves::domain::entities::cve_description::CveDescription;
+use crate::cves::domain::entities::cve_id::CveId;
 use crate::cves::domain::entities::cve_publication_date::CvePublicationDate;
 use crate::cves::domain::entities::cve_state::CveState;
-use crate::cves::domain::entities::cve_id::CveId;
 use crate::shared::domain::errors::DomainError;
 use serde::{Deserialize, Serialize};
 
@@ -24,15 +24,17 @@ pub fn parse_to_dto(cve: &Cve) -> CveJsonDto {
 }
 
 pub fn parse_to_domain(dto: &CveJsonDto) -> Result<Cve, DomainError> {
-    let id = CveId::from_optional(&dto.id)
-        .or_else(|e| Err(e)).unwrap();
+    let id = CveId::from_optional(&dto.id).or_else(|e| Err(e)).unwrap();
     let state = CveState::from_optional(&dto.state)
-        .or_else(|e| Err(e)).unwrap();
+        .or_else(|e| Err(e))
+        .unwrap();
     let date_published = CvePublicationDate::from_optional(&dto.date_published)
-        .or_else(|e| Err(e)).unwrap();
+        .or_else(|e| Err(e))
+        .unwrap();
     let description = CveDescription::new(&dto.description)
-        .or_else(|e| Err(e)).unwrap();
-    
+        .or_else(|e| Err(e))
+        .unwrap();
+
     let cve = Cve::new(id, state, date_published, description);
 
     Ok(cve)

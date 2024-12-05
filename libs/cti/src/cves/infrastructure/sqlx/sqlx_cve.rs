@@ -1,6 +1,9 @@
 use sqlx::FromRow;
 
-use crate::cves::domain::entities::{cve::Cve, cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate, cve_state::CveState};
+use crate::cves::domain::entities::{
+    cve::Cve, cve_description::CveDescription, cve_id::CveId,
+    cve_publication_date::CvePublicationDate, cve_state::CveState,
+};
 
 #[derive(Debug, FromRow, Clone)]
 pub struct SqlxCve {

@@ -1,6 +1,5 @@
 use std::sync::Arc;
 
-
 use async_trait::async_trait;
 
 use super::domain_event::DomainEvent;

@@ -1,5 +1,11 @@
+use crate::{
+    cves::domain::{
+        entities::{cve::Cve, cve_id::CveId},
+        repositories::cve_repository::CveRepository,
+    },
+    shared::domain::errors::DomainError,
+};
 use async_trait::async_trait;
-use crate::{cves::domain::{entities::{cve::Cve, cve_id::CveId}, repositories::cve_repository::CveRepository}, shared::domain::errors::DomainError};
 
 use tracing::error;
 
@@ -27,18 +33,17 @@ impl SqlxPostgresCveRepository {
         let pool = pool_res.unwrap();
         sqlx::query("SET search_path TO kernel")
             .execute(&pool)
-            .await.expect("Schema kernel not found.");
+            .await
+            .expect("Schema kernel not found.");
         Self::new(pool)
     }
 }
 
 #[async_trait]
 impl CveRepository for SqlxPostgresCveRepository {
-
     async fn find_by_id(&self, id: &CveId) -> Result<Cve, DomainError> {
         let query = "SELECT * FROM cti.cves WHERE id = $1";
-        let query = sqlx::query_as(query)
-            .bind(id.value());
+        let query = sqlx::query_as(query).bind(id.value());
         let key_res: Result<SqlxCve, sqlx::Error> = query.fetch_one(&self.pool).await;
         if key_res.is_err() {
             return match key_res.err().unwrap() {
@@ -47,14 +52,15 @@ impl CveRepository for SqlxPostgresCveRepository {
                     error!("Error: {:?}", err);
                     Err(DomainError::Unknown)
                 }
-            }
+            };
         }
         Ok(key_res.unwrap().to_domain())
     }
 
     async fn create_one(&self, cve: &Cve) -> Result<(), DomainError> {
         let sql_cve: SqlxCve = SqlxCve::from_domain(cve);
-        let query = "INSERT INTO cti.cves (id, state, date_published, description) VALUES ($1, $2, $3, $4)";
+        let query =
+            "INSERT INTO cti.cves (id, state, date_published, description) VALUES ($1, $2, $3, $4)";
         let res = sqlx::query(query)
             .bind(&sql_cve.id)
             .bind(&sql_cve.state)
@@ -62,21 +68,25 @@ impl CveRepository for SqlxPostgresCveRepository {
             .bind(&sql_cve.description)
             .fetch_optional(&self.pool)
             .await;
-        if res.is_err() { // TODO: check sql error code or message
+        if res.is_err() {
+            // TODO: check sql error code or message
             return match res.err().unwrap() {
-                sqlx::Error::Database(_) => Err(DomainError::CveAlreadyExists { id: cve.id.value() }),
+                sqlx::Error::Database(_) => {
+                    Err(DomainError::CveAlreadyExists { id: cve.id.value() })
+                }
                 err => {
                     error!("Error: {:?}", err);
                     Err(DomainError::Unknown)
                 }
-            }
+            };
         }
         Ok(())
     }
 
     async fn update_one(&self, cve: &Cve) -> Result<(), DomainError> {
         let sql_cve: SqlxCve = SqlxCve::from_domain(cve);
-        let query = "UPDATE cti.cves SET state = $1, date_published = $2, description = $3 WHERE id = $3";
+        let query =
+            "UPDATE cti.cves SET state = $1, date_published = $2, description = $3 WHERE id = $3";
         let res = sqlx::query(query)
             .bind(&sql_cve.state)
             .bind(&sql_cve.date_published)
@@ -85,14 +95,15 @@ impl CveRepository for SqlxPostgresCveRepository {
             .fetch_optional(&self.pool)
             .await;
 
-        if res.is_err() { // TODO: check sql error code or message
+        if res.is_err() {
+            // TODO: check sql error code or message
             return match res.err().unwrap() {
                 sqlx::Error::RowNotFound => Err(DomainError::CveNotFound { id: cve.id.value() }),
                 err => {
                     error!("Error: {:?}", err);
                     Err(DomainError::Unknown)
                 }
-            }
+            };
         }
         Ok(())
     }
@@ -103,16 +114,16 @@ impl CveRepository for SqlxPostgresCveRepository {
             .bind(id.value())
             .fetch_optional(&self.pool)
             .await;
-        if res.is_err() { // TODO: check sql error code or message
+        if res.is_err() {
+            // TODO: check sql error code or message
             return match res.err().unwrap() {
                 sqlx::Error::RowNotFound => Err(DomainError::CveNotFound { id: id.value() }),
                 err => {
                     error!("Error: {:?}", err);
                     Err(DomainError::Unknown)
                 }
-            }
+            };
         }
         Ok(())
     }
 }
-
