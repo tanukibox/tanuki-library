@@ -1,13 +1,16 @@
+use std::sync::Arc;
+
 use actix_web::{web, HttpRequest, HttpResponse};
 use cqrs::domain::query_bus::QueryBus;
 use cti::{cves::{application::{cve_query_response::CveQueryResponse, find_one::find_cve_query::FindCveQuery}, domain::repositories::cve_repository::CveRepository, infrastructure::dtos::cve_json_dto::parse_to_dto}, shared::domain::errors::DomainError};
-use events::domain::event_bus::EventBus;
+use tracing::{self as logger};
 
-pub async fn controller<R: CveRepository, E: EventBus>(
+pub async fn controller<R: CveRepository>(
     cve_id: web::Path<String>,
     _: HttpRequest,
-    query_bus: web::Data<dyn QueryBus>,
+    query_bus: web::Data<Arc<dyn QueryBus>>,
 ) -> HttpResponse {
+    logger::debug!("GET /api/v1/cves/{} called.", cve_id);
     let q = FindCveQuery::new_boxed(
         Some(cve_id.clone()),
     );

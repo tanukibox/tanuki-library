@@ -1,3 +1,5 @@
+use std::sync::Arc;
+
 use actix_web::{web, HttpRequest, HttpResponse};
 use cqrs::domain::command_bus::CommandBus;
 use cti::{cves::{application::{create_one::create_cve_command::CreateCveCommand, cve_command_response::CveCommandResponse}, domain::repositories::cve_repository::CveRepository, infrastructure::dtos::cve_json_dto::CveJsonDto}, shared::domain::errors::DomainError};
@@ -6,7 +8,7 @@ use events::domain::event_bus::EventBus;
 pub async fn controller<R: CveRepository, E: EventBus>(
     dto: web::Json<CveJsonDto>,
     _: HttpRequest,
-    command_bus: web::Data<dyn CommandBus>,
+    command_bus: web::Data<Arc<dyn CommandBus>>,
 ) -> HttpResponse {
     let cmd = CreateCveCommand::new_boxed(
         dto.id.clone(), 

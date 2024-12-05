@@ -8,7 +8,7 @@ pub mod cve_get_controller;
 pub fn router<R: CveRepository, E: EventBus>(cfg: &mut ServiceConfig) {
     cfg.service(
         web::scope("/api/v1/cves")
-            .configure(|cfg: &mut ServiceConfig| -> () { cfg.route("/{cve_id}", web::get().to(cve_get_controller::controller::<R, E>)); })
+            .configure(|cfg: &mut ServiceConfig| -> () { cfg.route("/{cve_id}", web::get().to(cve_get_controller::controller::<R>)); })
             .configure(|cfg: &mut ServiceConfig| -> () { cfg.route("/", web::post().to(cve_post_controller::controller::<R, E>)); })
     );
 }
