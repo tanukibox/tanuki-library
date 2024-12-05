@@ -6,3 +6,4 @@ pub mod delete_one;
 
 pub mod cve_command_response;
 pub mod cve_query_response;
+pub mod cves_query_response;
