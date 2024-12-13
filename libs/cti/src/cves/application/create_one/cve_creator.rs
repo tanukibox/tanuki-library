@@ -5,8 +5,7 @@ use events::domain::event_bus::EventBus;
 use crate::{
     cves::domain::{
         entities::{
-            cve::Cve, cve_description::CveDescription, cve_id::CveId,
-            cve_publication_date::CvePublicationDate, cve_state::CveState,
+            cve::Cve, cve_assigner_id::CveAssignerId, cve_assigner_name::CveAssignerName, cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate, cve_state::CveState, cve_updated_date::CveUpdatedDate
         },
         events::cve_created_event::CveCreatedEvent,
         repositories::cve_repository::CveRepository,
@@ -31,11 +30,14 @@ impl<R: CveRepository, E: EventBus> CveCreator<R, E> {
         &self,
         id: CveId,
         state: CveState,
-        date_published: CvePublicationDate,
         description: CveDescription,
+        assigner_id: CveAssignerId,
+        assigner_name: CveAssignerName,
+        date_published: CvePublicationDate,
+        date_updated: CveUpdatedDate,
     ) -> Result<(), DomainError> {
         tracing::debug!("Starting CVE creation for {}.", id);
-        let cve = Cve::from(&id, &state, &date_published, &description);
+        let cve = Cve::from(&id, &state, &description, &assigner_id, &assigner_name, &date_published, &date_updated);
         let res = self.repository.create_one(&cve).await;
         if res.is_err() {
             tracing::info!("Error creating CVE with id: {}.", id);

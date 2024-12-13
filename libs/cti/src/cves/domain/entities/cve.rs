@@ -1,43 +1,57 @@
 use aggregate_root::domain::aggregate_root::AggregateRoot;
 
 use super::{
-    cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate,
-    cve_state::CveState,
+    cve_assigner_id::CveAssignerId, cve_assigner_name::CveAssignerName, cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate, cve_state::CveState, cve_updated_date::CveUpdatedDate
 };
 
 pub struct Cve {
     pub id: CveId,
     pub state: CveState,
-    pub date_published: CvePublicationDate,
     pub description: CveDescription,
+    pub assigner_id: CveAssignerId,
+    pub assigner_name: CveAssignerName,
+    pub date_published: CvePublicationDate,
+    pub date_updated: CveUpdatedDate,
 }
 
 impl Cve {
     pub fn from(
         id: &CveId,
         state: &CveState,
-        date_published: &CvePublicationDate,
         description: &CveDescription,
+        assigner_id: &CveAssignerId,
+        assigner_name: &CveAssignerName,
+        date_published: &CvePublicationDate,
+        date_updated: &CveUpdatedDate,
     ) -> Self {
         Self::new(
             id.clone(),
             state.clone(),
-            date_published.clone(),
             description.clone(),
+            assigner_id.clone(),
+            assigner_name.clone(),
+            date_published.clone(),
+            date_updated.clone(),
         )
     }
 
     pub fn new(
         id: CveId,
         state: CveState,
-        date_published: CvePublicationDate,
         description: CveDescription,
+        assigner_id: CveAssignerId,
+        assigner_name: CveAssignerName,
+        date_published: CvePublicationDate,
+        date_updated: CveUpdatedDate,
     ) -> Self {
         Self {
             id,
             state,
-            date_published,
             description,
+            assigner_id,
+            assigner_name,
+            date_published,
+            date_updated,
         }
     }
 }
@@ -53,8 +67,11 @@ impl Clone for Cve {
         Self::from(
             &self.id,
             &self.state,
-            &self.date_published,
             &self.description,
+            &self.assigner_id,
+            &self.assigner_name,
+            &self.date_published,
+            &self.date_updated,
         )
     }
 }

@@ -23,8 +23,11 @@ pub async fn controller<R: CveRepository, E: EventBus>(
     let cmd = CreateCveCommand::new_boxed(
         dto.id.clone(),
         dto.state.clone(),
-        dto.date_published.clone(),
         dto.description.clone(),
+        dto.assigner_id.clone(),
+        dto.assigner_name.clone(),
+        dto.date_published.clone(),
+        dto.date_updated.clone(),
     );
 
     let res = command_bus.dispatch(cmd).await;
