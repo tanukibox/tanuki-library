@@ -17,9 +17,6 @@ use cti::cves::{
         create_one::{
             create_cve_command_handler::CreateCveCommandHandler, cve_creator::CveCreator,
         },
-        delete_one::{
-            cve_deleter::CveDeleter, delete_cve_command_handler::DeleteCveCommandHandler,
-        },
         find_one::{cve_finder::CveFinder, find_cve_q_handler::FindCveQueryHandler},
     },
     infrastructure::sqlx::sqlx_postgres_cve_repository::SqlxPostgresCveRepository,
@@ -63,11 +60,6 @@ async fn main() -> std::io::Result<()> {
     let create_cve_cmd_handler = CreateCveCommandHandler::new(cve_creator);
     let create_cve_cmd_handler_ref = Arc::new(create_cve_cmd_handler);
     command_bus.register(create_cve_cmd_handler_ref);
-
-    let cve_deleter = CveDeleter::new(cve_repository_ref.clone(), event_bus_ref.clone());
-    let delete_cve_cmd_handler = DeleteCveCommandHandler::new(cve_deleter);
-    let delete_cve_cmd_handler_ref = Arc::new(delete_cve_cmd_handler);
-    command_bus.register(delete_cve_cmd_handler_ref);
 
     let query_bus_ref: Data<Arc<dyn QueryBus>> = Data::new(Arc::new(query_bus));
     let command_bus_ref: Data<Arc<dyn CommandBus>> = Data::new(Arc::new(command_bus));
