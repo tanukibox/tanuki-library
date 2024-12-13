@@ -75,3 +75,15 @@ impl Clone for Cve {
         )
     }
 }
+
+impl PartialEq for Cve {
+    fn eq(&self, other: &Self) -> bool {
+        self.id == other.id
+            && self.state == other.state
+            && self.description == other.description
+            && self.assigner_id == other.assigner_id
+            && self.assigner_name == other.assigner_name
+            && self.date_published == other.date_published
+            && self.date_updated == other.date_updated
+    }
+}
