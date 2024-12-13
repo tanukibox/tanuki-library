@@ -60,12 +60,15 @@ impl CveRepository for SqlxPostgresCveRepository {
     async fn create_one(&self, cve: &Cve) -> Result<(), DomainError> {
         let sql_cve: SqlxCve = SqlxCve::from_domain(cve);
         let query =
-            "INSERT INTO cti.cves (id, state, date_published, description) VALUES ($1, $2, $3, $4)";
+            "INSERT INTO cti.cves (id, state, description, assigner_id, assigner_name, date_published, date_updated) VALUES ($1, $2, $3, $4, $5, $6, $7)";
         let res = sqlx::query(query)
             .bind(&sql_cve.id)
             .bind(&sql_cve.state)
-            .bind(&sql_cve.date_published)
             .bind(&sql_cve.description)
+            .bind(&sql_cve.assigner_id)
+            .bind(&sql_cve.assigner_name)
+            .bind(&sql_cve.date_published)
+            .bind(&sql_cve.date_updated)
             .fetch_optional(&self.pool)
             .await;
         if res.is_err() {
@@ -86,11 +89,15 @@ impl CveRepository for SqlxPostgresCveRepository {
     async fn update_one(&self, cve: &Cve) -> Result<(), DomainError> {
         let sql_cve: SqlxCve = SqlxCve::from_domain(cve);
         let query =
-            "UPDATE cti.cves SET state = $1, date_published = $2, description = $3 WHERE id = $3";
+            "UPDATE cti.cves SET state = $1, description = $2, assigner_id = $3, assigner_name = $4, date_published = $5, 
+            date_updated = $6 WHERE id = $7";
         let res = sqlx::query(query)
             .bind(&sql_cve.state)
-            .bind(&sql_cve.date_published)
             .bind(&sql_cve.description)
+            .bind(&sql_cve.assigner_id)
+            .bind(&sql_cve.assigner_name)
+            .bind(&sql_cve.date_published)
+            .bind(&sql_cve.date_updated)
             .bind(&sql_cve.id)
             .fetch_optional(&self.pool)
             .await;
