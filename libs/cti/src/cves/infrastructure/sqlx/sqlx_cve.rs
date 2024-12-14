@@ -1,7 +1,9 @@
 use sqlx::FromRow;
 
 use crate::cves::domain::entities::{
-    cve::Cve, cve_assigner_id::CveAssignerId, cve_assigner_name::CveAssignerName, cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate, cve_state::CveState, cve_updated_date::CveUpdatedDate
+    cve::Cve, cve_assigner_id::CveAssignerId, cve_assigner_name::CveAssignerName,
+    cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate,
+    cve_state::CveState, cve_updated_date::CveUpdatedDate,
 };
 
 #[derive(Debug, FromRow, Clone)]

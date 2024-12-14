@@ -5,7 +5,10 @@ use events::domain::event_bus::EventBus;
 use crate::{
     cves::domain::{
         entities::{
-            cve::Cve, cve_assigner_id::CveAssignerId, cve_assigner_name::CveAssignerName, cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate, cve_state::CveState, cve_updated_date::CveUpdatedDate
+            cve::Cve, cve_assigner_id::CveAssignerId, cve_assigner_name::CveAssignerName,
+            cve_description::CveDescription, cve_id::CveId,
+            cve_publication_date::CvePublicationDate, cve_state::CveState,
+            cve_updated_date::CveUpdatedDate,
         },
         events::cve_updated_event::CveUpdatedEvent,
         repositories::cve_repository::CveRepository,
@@ -44,7 +47,15 @@ impl<R: CveRepository, E: EventBus> CveUpdater<R, E> {
         };
         tracing::debug!("CVE {} found.", id);
         tracing::debug!("Starting CVE update for {}.", id);
-        let cve = Cve::from(&id, &state, &description, &assigner_id, &assigner_name, &date_published, &date_updated);
+        let cve = Cve::from(
+            &id,
+            &state,
+            &description,
+            &assigner_id,
+            &assigner_name,
+            &date_published,
+            &date_updated,
+        );
         if cve == old_cve {
             tracing::info!("CVE with id: {} is already up to date.", id);
             return Ok(());

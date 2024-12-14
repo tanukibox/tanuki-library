@@ -1,10 +1,10 @@
 use crate::cves::domain::entities::cve_assigner_name::CveAssignerName;
-use crate::cves::domain::entities::cve_updated_date::CveUpdatedDate;
-use crate::cves::domain::entities::{cve::Cve, cve_assigner_id::CveAssignerId};
 use crate::cves::domain::entities::cve_description::CveDescription;
 use crate::cves::domain::entities::cve_id::CveId;
 use crate::cves::domain::entities::cve_publication_date::CvePublicationDate;
 use crate::cves::domain::entities::cve_state::CveState;
+use crate::cves::domain::entities::cve_updated_date::CveUpdatedDate;
+use crate::cves::domain::entities::{cve::Cve, cve_assigner_id::CveAssignerId};
 use crate::shared::domain::errors::DomainError;
 use serde::{Deserialize, Serialize};
 
@@ -27,7 +27,7 @@ pub fn parse_to_dto(cve: &Cve) -> CveJsonDto {
         description: cve.description.value(),
         assigner_id: Some(cve.assigner_id.value()),
         assigner_name: Some(cve.assigner_name.value()),
-        
+
         date_published: Some(cve.date_published.value()),
         date_updated: Some(cve.date_updated.value()),
     }
@@ -54,7 +54,15 @@ pub fn parse_to_domain(dto: &CveJsonDto) -> Result<Cve, DomainError> {
         .or_else(|e| Err(e))
         .unwrap();
 
-    let cve = Cve::new(id, state, description, assigner_id, assigner_name, date_published, date_updated);
+    let cve = Cve::new(
+        id,
+        state,
+        description,
+        assigner_id,
+        assigner_name,
+        date_published,
+        date_updated,
+    );
 
     Ok(cve)
 }

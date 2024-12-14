@@ -1,8 +1,16 @@
 use events::domain::domain_event::DomainEvent;
 
-use crate::{breaches::domain::entities::{breach_id::BreachId, breach_product::BreachProduct, breach_product_type::BreachProductType, breach_product_version::BreachProductVersion, breach_vendor::BreachVendor}, cves::domain::entities::{
-    cve_assigner_id::CveAssignerId, cve_assigner_name::CveAssignerName, cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate, cve_state::CveState, cve_updated_date::CveUpdatedDate
-}};
+use crate::{
+    breaches::domain::entities::{
+        breach_id::BreachId, breach_product::BreachProduct, breach_product_type::BreachProductType,
+        breach_product_version::BreachProductVersion, breach_vendor::BreachVendor,
+    },
+    cves::domain::entities::{
+        cve_assigner_id::CveAssignerId, cve_assigner_name::CveAssignerName,
+        cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate,
+        cve_state::CveState, cve_updated_date::CveUpdatedDate,
+    },
+};
 
 pub struct BreachCreatedEvent {
     pub id: String,

@@ -1,7 +1,9 @@
 use events::domain::domain_event::DomainEvent;
 
 use crate::cves::domain::entities::{
-    cve_assigner_id::CveAssignerId, cve_assigner_name::CveAssignerName, cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate, cve_state::CveState, cve_updated_date::CveUpdatedDate
+    cve_assigner_id::CveAssignerId, cve_assigner_name::CveAssignerName,
+    cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate,
+    cve_state::CveState, cve_updated_date::CveUpdatedDate,
 };
 
 pub struct CveCreatedEvent {

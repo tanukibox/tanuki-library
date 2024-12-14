@@ -17,7 +17,10 @@ use cti::cves::{
         create_one::{
             create_cve_command_handler::CreateCveCommandHandler, cve_creator::CveCreator,
         },
-        find_one::{cve_finder::CveFinder, find_cve_q_handler::FindCveQueryHandler}, update_one::{cve_updater::CveUpdater, update_cve_command_handler::UpdateCveCommandHandler},
+        find_one::{cve_finder::CveFinder, find_cve_q_handler::FindCveQueryHandler},
+        update_one::{
+            cve_updater::CveUpdater, update_cve_command_handler::UpdateCveCommandHandler,
+        },
     },
     infrastructure::sqlx::sqlx_postgres_cve_repository::SqlxPostgresCveRepository,
 };

@@ -1,5 +1,6 @@
 use crate::{
-    breaches::domain::entities::{breach::Breach, breach_id::BreachId}, shared::domain::errors::DomainError
+    breaches::domain::entities::{breach::Breach, breach_id::BreachId},
+    shared::domain::errors::DomainError,
 };
 use async_trait::async_trait;
 

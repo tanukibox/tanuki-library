@@ -1,7 +1,9 @@
 use events::domain::domain_event::DomainEvent;
 
 use crate::cves::domain::entities::{
-    cve_assigner_id::CveAssignerId, cve_assigner_name::CveAssignerName, cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate, cve_state::CveState, cve_updated_date::CveUpdatedDate
+    cve_assigner_id::CveAssignerId, cve_assigner_name::CveAssignerName,
+    cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate,
+    cve_state::CveState, cve_updated_date::CveUpdatedDate,
 };
 
 pub struct CveUpdatedEvent {
@@ -39,7 +41,6 @@ impl CveUpdatedEvent {
         cve_old_date_published: &CvePublicationDate,
         cve_updated_date: &CveUpdatedDate,
         cve_old_updated_date: &CveUpdatedDate,
-        
     ) -> Self {
         let id = uuid::Uuid::new_v4().to_string();
         let occurred_on = chrono::Utc::now().to_rfc3339();

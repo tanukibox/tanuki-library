@@ -8,7 +8,10 @@ use crate::cves::{
     application::cve_command_response::CveCommandResponse,
     domain::{
         entities::{
-            cve_assigner_id::CveAssignerId, cve_assigner_name::CveAssignerName, cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate, cve_state::CveState, cve_updated_date::CveUpdatedDate
+            cve_assigner_id::CveAssignerId, cve_assigner_name::CveAssignerName,
+            cve_description::CveDescription, cve_id::CveId,
+            cve_publication_date::CvePublicationDate, cve_state::CveState,
+            cve_updated_date::CveUpdatedDate,
         },
         repositories::cve_repository::CveRepository,
     },
@@ -68,7 +71,15 @@ impl<R: CveRepository, E: EventBus> CommandHandler for CreateCveCommandHandler<R
 
         match self
             .creator
-            .run(id, state, description, assigner_id, assigner_name, publication_date, updated_date)
+            .run(
+                id,
+                state,
+                description,
+                assigner_id,
+                assigner_name,
+                publication_date,
+                updated_date,
+            )
             .await
         {
             Ok(_) => CveCommandResponse::boxed_ok(),

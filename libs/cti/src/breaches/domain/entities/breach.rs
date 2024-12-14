@@ -1,8 +1,15 @@
 use aggregate_root::domain::aggregate_root::AggregateRoot;
 
-use crate::cves::domain::entities::{cve_assigner_id::CveAssignerId, cve_assigner_name::CveAssignerName, cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate, cve_state::CveState, cve_updated_date::CveUpdatedDate};
+use crate::cves::domain::entities::{
+    cve_assigner_id::CveAssignerId, cve_assigner_name::CveAssignerName,
+    cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate,
+    cve_state::CveState, cve_updated_date::CveUpdatedDate,
+};
 
-use super::{breach_id::BreachId, breach_product::BreachProduct, breach_product_type::BreachProductType, breach_product_version::BreachProductVersion, breach_vendor::BreachVendor};
+use super::{
+    breach_id::BreachId, breach_product::BreachProduct, breach_product_type::BreachProductType,
+    breach_product_version::BreachProductVersion, breach_vendor::BreachVendor,
+};
 
 pub struct Breach {
     // Breach data
