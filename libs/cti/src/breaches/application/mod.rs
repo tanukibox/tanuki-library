@@ -4,3 +4,4 @@ pub mod find_one;
 pub mod update_one;
 
 pub mod breach_command_response;
+pub mod breach_query_response;
