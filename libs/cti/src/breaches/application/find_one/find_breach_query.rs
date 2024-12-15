@@ -12,11 +12,26 @@ pub struct FindBreachQuery {
 impl FindBreachQuery {
     pub const QUERY_TYPE: &'static str = "FindBreachQuery";
 
-    pub fn new(cve_id: Option<String>, vendor: Option<String>, product: Option<String>, version: Option<String>) -> FindBreachQuery {
-        FindBreachQuery { cve_id, vendor, product, version }
+    pub fn new(
+        cve_id: Option<String>,
+        vendor: Option<String>,
+        product: Option<String>,
+        version: Option<String>,
+    ) -> FindBreachQuery {
+        FindBreachQuery {
+            cve_id,
+            vendor,
+            product,
+            version,
+        }
     }
 
-    pub fn new_boxed(cve_id: Option<String>, vendor: Option<String>, product: Option<String>, version: Option<String>) -> Box<dyn Query> {
+    pub fn new_boxed(
+        cve_id: Option<String>,
+        vendor: Option<String>,
+        product: Option<String>,
+        version: Option<String>,
+    ) -> Box<dyn Query> {
         Box::new(FindBreachQuery::new(cve_id, vendor, product, version))
     }
 }
