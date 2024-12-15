@@ -4,28 +4,28 @@ use crate::{breaches::domain::entities::breach::Breach, shared::domain::errors::
 
 pub struct BreachQueryResponse {
     pub error: Option<DomainError>,
-    pub cve: Option<Breach>,
+    pub breach: Option<Breach>,
 }
 
 impl BreachQueryResponse {
     pub const RES_TYPE: &'static str = "BreachQueryResponse";
 
-    pub fn ok(cve: Breach) -> BreachQueryResponse {
+    pub fn ok(breach: Breach) -> BreachQueryResponse {
         BreachQueryResponse {
             error: None,
-            cve: Some(cve),
+            breach: Some(breach),
         }
     }
 
-    pub fn boxed_ok(cve: Breach) -> Box<BreachQueryResponse> {
-        let res = BreachQueryResponse::ok(cve);
+    pub fn boxed_ok(breach: Breach) -> Box<BreachQueryResponse> {
+        let res = BreachQueryResponse::ok(breach);
         Box::new(res)
     }
 
     pub fn err(error: DomainError) -> BreachQueryResponse {
         BreachQueryResponse {
             error: Some(error),
-            cve: None,
+            breach: None,
         }
     }
 
