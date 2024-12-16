@@ -49,7 +49,11 @@ impl<R: BreachRepository, E: EventBus> BreachUpdater<R, E> {
         cve_date_updated: CveUpdatedDate,
     ) -> Result<(), DomainError> {
         tracing::debug!("Searching Breach update for {}.", id);
-        let old_breach =  match self.repository.find_one(&cve_id, &vendor, &product, &product_version).await {
+        let old_breach = match self
+            .repository
+            .find_one(&cve_id, &vendor, &product, &product_version)
+            .await
+        {
             Ok(breach) => breach,
             Err(err) => {
                 tracing::info!("Error finding Breach with id: {}.", id);
