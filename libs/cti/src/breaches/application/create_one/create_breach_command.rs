@@ -9,12 +9,6 @@ pub struct CreateBreachCommand {
     pub product_type: Option<String>,
 
     pub cve_id: Option<String>,
-    pub cve_state: Option<String>,
-    pub cve_description: Option<String>,
-    pub cve_assigner_id: Option<String>,
-    pub cve_assigner_name: Option<String>,
-    pub cve_date_published: Option<String>,
-    pub cve_date_updated: Option<String>,
 }
 
 impl CreateBreachCommand {
@@ -27,12 +21,6 @@ impl CreateBreachCommand {
         product_version: Option<String>,
         product_type: Option<String>,
         cve_id: Option<String>,
-        cve_state: Option<String>,
-        cve_description: Option<String>,
-        cve_assigner_id: Option<String>,
-        cve_assigner_name: Option<String>,
-        cve_date_published: Option<String>,
-        cve_date_updated: Option<String>,
     ) -> CreateBreachCommand {
         CreateBreachCommand {
             id,
@@ -41,12 +29,6 @@ impl CreateBreachCommand {
             product_version,
             product_type,
             cve_id,
-            cve_state,
-            cve_description,
-            cve_assigner_id,
-            cve_assigner_name,
-            cve_date_published,
-            cve_date_updated,
         }
     }
 
@@ -57,12 +39,6 @@ impl CreateBreachCommand {
         product_version: Option<String>,
         product_type: Option<String>,
         cve_id: Option<String>,
-        cve_state: Option<String>,
-        cve_description: Option<String>,
-        cve_assigner_id: Option<String>,
-        cve_assigner_name: Option<String>,
-        cve_date_published: Option<String>,
-        cve_date_updated: Option<String>,
     ) -> Box<dyn Command> {
         Box::new(CreateBreachCommand::new(
             id,
@@ -71,12 +47,6 @@ impl CreateBreachCommand {
             product_version,
             product_type,
             cve_id,
-            cve_state,
-            cve_description,
-            cve_assigner_id,
-            cve_assigner_name,
-            cve_date_published,
-            cve_date_updated,
         ))
     }
 }

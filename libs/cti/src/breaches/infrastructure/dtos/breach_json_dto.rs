@@ -6,10 +6,10 @@ use crate::breaches::domain::entities::{breach::Breach, breach_id::BreachId};
 use crate::cves::domain::entities::cve_assigner_id::CveAssignerId;
 use crate::cves::domain::entities::cve_assigner_name::CveAssignerName;
 use crate::cves::domain::entities::cve_description::CveDescription;
-use crate::cves::domain::entities::cve_publication_date::CvePublicationDate;
-use crate::cves::domain::entities::cve_updated_date::CveUpdatedDate;
 use crate::cves::domain::entities::cve_id::CveId;
+use crate::cves::domain::entities::cve_publication_date::CvePublicationDate;
 use crate::cves::domain::entities::cve_state::CveState;
+use crate::cves::domain::entities::cve_updated_date::CveUpdatedDate;
 use crate::shared::domain::errors::DomainError;
 use serde::{Deserialize, Serialize};
 
@@ -100,20 +100,19 @@ pub fn parse_to_domain(dto: &BreachJsonDto) -> Result<Breach, DomainError> {
         .unwrap();
 
     let breach = Breach::from(
-        &id, 
-        &vendor, 
-        &product, 
-        &product_version, 
-        &product_type, 
-        &cve_id, 
-        &cve_state, 
-        &cve_description, 
-        &cve_assigner_id, 
-        &cve_assigner_name, 
-        &cve_date_published, 
-        &cve_date_updated
+        &id,
+        &vendor,
+        &product,
+        &product_version,
+        &product_type,
+        &cve_id,
+        &cve_state,
+        &cve_description,
+        &cve_assigner_id,
+        &cve_assigner_name,
+        &cve_date_published,
+        &cve_date_updated,
     );
 
     Ok(breach)
-
 }

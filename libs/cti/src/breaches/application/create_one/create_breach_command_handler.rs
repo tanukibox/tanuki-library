@@ -1,6 +1,7 @@
 use async_trait::async_trait;
 use cqrs::domain::{
-    command::Command, command_bus_response::CommandBusResponse, command_handler::CommandHandler, query_bus::QueryBus,
+    command::Command, command_bus_response::CommandBusResponse, command_handler::CommandHandler,
+    query_bus::QueryBus,
 };
 use events::domain::event_bus::EventBus;
 
@@ -16,11 +17,7 @@ use crate::{
             repositories::breach_repository::BreachRepository,
         },
     },
-    cves::domain::entities::{
-        cve_assigner_id::CveAssignerId, cve_assigner_name::CveAssignerName,
-        cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate,
-        cve_state::CveState, cve_updated_date::CveUpdatedDate,
-    },
+    cves::domain::entities::cve_id::CveId,
 };
 
 use super::{breach_creator::BreachCreator, create_breach_command::CreateBreachCommand};
@@ -36,7 +33,9 @@ impl<R: BreachRepository, Q: QueryBus, E: EventBus> CreateBreachCommandHandler<R
 }
 
 #[async_trait]
-impl<R: BreachRepository, Q: QueryBus, E: EventBus> CommandHandler for CreateBreachCommandHandler<R, Q, E> {
+impl<R: BreachRepository, Q: QueryBus, E: EventBus> CommandHandler
+    for CreateBreachCommandHandler<R, Q, E>
+{
     async fn handle(&self, command: Box<dyn Command>) -> Box<dyn CommandBusResponse> {
         let command = command
             .as_any()
@@ -73,53 +72,9 @@ impl<R: BreachRepository, Q: QueryBus, E: EventBus> CommandHandler for CreateBre
             Err(err) => return BreachCommandResponse::boxed_err(err),
         };
 
-        let cve_state = match CveState::from_optional(&command.cve_state) {
-            Ok(state) => state,
-            Err(err) => return BreachCommandResponse::boxed_err(err),
-        };
-
-        let cve_description = match CveDescription::new(&command.cve_description) {
-            Ok(description) => description,
-            Err(err) => return BreachCommandResponse::boxed_err(err),
-        };
-
-        let cve_assigner_id = match CveAssignerId::from_optional(&command.cve_assigner_id) {
-            Ok(assigner_id) => assigner_id,
-            Err(err) => return BreachCommandResponse::boxed_err(err),
-        };
-
-        let cve_assigner_name = match CveAssignerName::from_optional(&command.cve_assigner_name) {
-            Ok(assigner_name) => assigner_name,
-            Err(err) => return BreachCommandResponse::boxed_err(err),
-        };
-
-        let cve_publication_date =
-            match CvePublicationDate::from_optional(&command.cve_date_published) {
-                Ok(publication_date) => publication_date,
-                Err(err) => return BreachCommandResponse::boxed_err(err),
-            };
-
-        let cve_updated_date = match CveUpdatedDate::from_optional(&command.cve_date_updated) {
-            Ok(updated_date) => updated_date,
-            Err(err) => return BreachCommandResponse::boxed_err(err),
-        };
-
         match self
             .creator
-            .run(
-                id,
-                vendor,
-                product,
-                product_version,
-                product_type,
-                cve_id,
-                cve_state,
-                cve_description,
-                cve_assigner_id,
-                cve_assigner_name,
-                cve_publication_date,
-                cve_updated_date,
-            )
+            .run(id, vendor, product, product_version, product_type, cve_id)
             .await
         {
             Ok(_) => BreachCommandResponse::boxed_ok(),

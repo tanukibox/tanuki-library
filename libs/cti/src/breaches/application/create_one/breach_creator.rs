@@ -13,9 +13,12 @@ use crate::{
         events::breach_created_event::BreachCreatedEvent,
         repositories::breach_repository::BreachRepository,
     },
-    cves::{application::{cve_query_response::CveQueryResponse, find_one::find_cve_query::FindCveQuery}, domain::entities::{
-        cve::Cve, cve_assigner_id::CveAssignerId, cve_assigner_name::CveAssignerName, cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate, cve_state::CveState, cve_updated_date::CveUpdatedDate
-    }},
+    cves::{
+        application::{
+            cve_query_response::CveQueryResponse, find_one::find_cve_query::FindCveQuery,
+        },
+        domain::entities::{cve::Cve, cve_id::CveId},
+    },
     shared::domain::errors::DomainError,
 };
 
@@ -26,7 +29,11 @@ pub struct BreachCreator<R: BreachRepository, Q: QueryBus, E: EventBus> {
 }
 
 impl<R: BreachRepository, Q: QueryBus, E: EventBus> BreachCreator<R, Q, E> {
-    pub fn new(breach_repository: Arc<R>, query_bus: Arc<Q>, event_bus: Arc<E>) -> BreachCreator<R, Q, E> {
+    pub fn new(
+        breach_repository: Arc<R>,
+        query_bus: Arc<Q>,
+        event_bus: Arc<E>,
+    ) -> BreachCreator<R, Q, E> {
         BreachCreator {
             repository: breach_repository,
             query_bus,
@@ -42,12 +49,6 @@ impl<R: BreachRepository, Q: QueryBus, E: EventBus> BreachCreator<R, Q, E> {
         product_version: BreachProductVersion,
         product_type: BreachProductType,
         cve_id: CveId,
-        cve_state: CveState,
-        cve_description: CveDescription,
-        cve_assigner_id: CveAssignerId,
-        cve_assigner_name: CveAssignerName,
-        cve_date_published: CvePublicationDate,
-        cve_date_updated: CveUpdatedDate,
     ) -> Result<(), DomainError> {
         tracing::debug!("Starting Breach creation for {}.", id);
         tracing::debug!("Finding CVE with id: {}.", cve_id);
@@ -82,13 +83,13 @@ impl<R: BreachRepository, Q: QueryBus, E: EventBus> BreachCreator<R, Q, E> {
             &product,
             &product_version,
             &product_type,
-            &cve_id,
-            &cve_state,
-            &cve_description,
-            &cve_assigner_id,
-            &cve_assigner_name,
-            &cve_date_published,
-            &cve_date_updated,
+            &cve.id,
+            &cve.state,
+            &cve.description,
+            &cve.assigner_id,
+            &cve.assigner_name,
+            &cve.date_published,
+            &cve.date_updated,
         );
         self.event_bus.publish(created_event).await;
         tracing::debug!("Breach with id: {} created.", id);
@@ -103,7 +104,7 @@ impl<R: BreachRepository, Q: QueryBus, E: EventBus> BreachCreator<R, Q, E> {
             Some(res) => res,
             None => panic!("Error getting CVE."),
         };
-        
+
         if res.is_ok() {
             let cve = res.cve.as_ref().unwrap().clone();
             return Ok(cve);

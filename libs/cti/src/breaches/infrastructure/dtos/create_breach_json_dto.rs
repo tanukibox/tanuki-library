@@ -2,8 +2,6 @@ use serde::{Deserialize, Serialize};
 
 use crate::breaches::domain::entities::breach::Breach;
 
-
-
 #[derive(Clone, Serialize, Deserialize)]
 pub struct CreateBreachJsonDto {
     pub id: Option<String>,
