@@ -1,6 +1,6 @@
 use async_trait::async_trait;
 use cqrs::domain::{
-    command::Command, command_bus_response::CommandBusResponse, command_handler::CommandHandler,
+    command::Command, command_bus_response::CommandBusResponse, command_handler::CommandHandler, query_bus::QueryBus,
 };
 use events::domain::event_bus::EventBus;
 
@@ -25,18 +25,18 @@ use crate::{
 
 use super::{breach_creator::BreachCreator, create_breach_command::CreateBreachCommand};
 
-pub struct CreateBreachCommandHandler<R: BreachRepository, E: EventBus> {
-    creator: BreachCreator<R, E>,
+pub struct CreateBreachCommandHandler<R: BreachRepository, Q: QueryBus, E: EventBus> {
+    creator: BreachCreator<R, Q, E>,
 }
 
-impl<R: BreachRepository, E: EventBus> CreateBreachCommandHandler<R, E> {
-    pub fn new(creator: BreachCreator<R, E>) -> CreateBreachCommandHandler<R, E> {
+impl<R: BreachRepository, Q: QueryBus, E: EventBus> CreateBreachCommandHandler<R, Q, E> {
+    pub fn new(creator: BreachCreator<R, Q, E>) -> CreateBreachCommandHandler<R, Q, E> {
         CreateBreachCommandHandler { creator }
     }
 }
 
 #[async_trait]
-impl<R: BreachRepository, E: EventBus> CommandHandler for CreateBreachCommandHandler<R, E> {
+impl<R: BreachRepository, Q: QueryBus, E: EventBus> CommandHandler for CreateBreachCommandHandler<R, Q, E> {
     async fn handle(&self, command: Box<dyn Command>) -> Box<dyn CommandBusResponse> {
         let command = command
             .as_any()
