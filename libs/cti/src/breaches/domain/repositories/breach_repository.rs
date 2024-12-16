@@ -13,9 +13,9 @@ pub trait BreachRepository: Send + Sync + 'static {
     async fn find_one(
         &self,
         cve_id: &CveId,
-        vendor: BreachVendor,
-        product: BreachProduct,
-        product_version: BreachProductVersion,
+        vendor: &BreachVendor,
+        product: &BreachProduct,
+        product_version: &BreachProductVersion,
     ) -> Result<Breach, DomainError>;
     async fn create_one(&self, breach: &Breach) -> Result<(), DomainError>;
     async fn update_one(&self, breach: &Breach) -> Result<(), DomainError>;
