@@ -31,6 +31,6 @@ impl<R: BreachRepository> BreachFinder<R> {
         }
         debug!("Breach with CVE: {} for Product: {}:{}:{}.", cve_id, vendor, product, product_version);
         
-        res
+        return res;
     }
 }
