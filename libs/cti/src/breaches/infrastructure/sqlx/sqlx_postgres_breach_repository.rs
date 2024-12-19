@@ -1,5 +1,13 @@
 use crate::{
-    breaches::domain::{entities::{breach::Breach, breach_product::BreachProduct, breach_product_version::BreachProductVersion, breach_vendor::BreachVendor}, repositories::breach_repository::BreachRepository}, cves::domain::entities::cve_id::CveId, shared::domain::errors::DomainError
+    breaches::domain::{
+        entities::{
+            breach::Breach, breach_product::BreachProduct,
+            breach_product_version::BreachProductVersion, breach_vendor::BreachVendor,
+        },
+        repositories::breach_repository::BreachRepository,
+    },
+    cves::domain::entities::cve_id::CveId,
+    shared::domain::errors::DomainError,
 };
 use async_trait::async_trait;
 
@@ -53,7 +61,7 @@ impl BreachRepository for SqlxPostgresBreachRepository {
         let key_res: Result<SqlxBreach, sqlx::Error> = query.fetch_one(&self.pool).await;
         if key_res.is_err() {
             return match key_res.err().unwrap() {
-                sqlx::Error::RowNotFound => Err(DomainError::BreachNotFound { 
+                sqlx::Error::RowNotFound => Err(DomainError::BreachNotFound {
                     cve_id: cve_id.value(),
                     vendor: vendor.value(),
                     product: product.value(),
@@ -92,14 +100,12 @@ impl BreachRepository for SqlxPostgresBreachRepository {
         if res.is_err() {
             // TODO: check sql error code or message
             return match res.err().unwrap() {
-                sqlx::Error::Database(_) => {
-                    Err(DomainError::BreachNotFound { 
-                        cve_id: breach.cve_id.value(),
-                        vendor: breach.vendor.value(),
-                        product: breach.product.value(),
-                        product_version: breach.product_version.value(),
-                    })
-                }
+                sqlx::Error::Database(_) => Err(DomainError::BreachNotFound {
+                    cve_id: breach.cve_id.value(),
+                    vendor: breach.vendor.value(),
+                    product: breach.product.value(),
+                    product_version: breach.product_version.value(),
+                }),
                 err => {
                     error!("Error: {:?}", err);
                     Err(DomainError::Unknown)

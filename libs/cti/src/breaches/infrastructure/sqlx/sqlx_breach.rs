@@ -1,26 +1,37 @@
 use sqlx::FromRow;
 
-use crate::{breaches::domain::entities::{breach::Breach, breach_id::BreachId, breach_product::BreachProduct, breach_product_type::BreachProductType, breach_product_version::BreachProductVersion, breach_vendor::BreachVendor}, cves::domain::entities::{cve_assigner_id::CveAssignerId, cve_assigner_name::CveAssignerName, cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate, cve_state::CveState, cve_updated_date::CveUpdatedDate}};
+use crate::{
+    breaches::domain::entities::{
+        breach::Breach, breach_id::BreachId, breach_product::BreachProduct,
+        breach_product_type::BreachProductType, breach_product_version::BreachProductVersion,
+        breach_vendor::BreachVendor,
+    },
+    cves::domain::entities::{
+        cve_assigner_id::CveAssignerId, cve_assigner_name::CveAssignerName,
+        cve_description::CveDescription, cve_id::CveId, cve_publication_date::CvePublicationDate,
+        cve_state::CveState, cve_updated_date::CveUpdatedDate,
+    },
+};
 
 #[derive(Debug, FromRow, Clone)]
 pub struct SqlxBreach {
-        // Breach data
-        pub id: String,
+    // Breach data
+    pub id: String,
 
-        // Product data
-        pub vendor: String,
-        pub product: String,
-        pub product_version: String,
-        pub product_type: String,
-    
-        // CVE data
-        pub cve_id: String,
-        pub cve_state: String,
-        pub cve_description: Option<String>,
-        pub cve_assigner_id: String,
-        pub cve_assigner_name: String,
-        pub cve_date_published: String,
-        pub cve_date_updated: String,
+    // Product data
+    pub vendor: String,
+    pub product: String,
+    pub product_version: String,
+    pub product_type: String,
+
+    // CVE data
+    pub cve_id: String,
+    pub cve_state: String,
+    pub cve_description: Option<String>,
+    pub cve_assigner_id: String,
+    pub cve_assigner_name: String,
+    pub cve_date_published: String,
+    pub cve_date_updated: String,
 }
 
 impl SqlxBreach {
