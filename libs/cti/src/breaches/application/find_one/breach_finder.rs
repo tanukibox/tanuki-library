@@ -8,7 +8,7 @@ use crate::{
         },
         repositories::breach_repository::BreachRepository,
     },
-    cves::domain::entities::{cve::Cve, cve_id::CveId},
+    cves::domain::entities::cve_id::CveId,
     shared::domain::errors::DomainError,
 };
 use std::sync::Arc;
