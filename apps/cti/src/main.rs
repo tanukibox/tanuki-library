@@ -12,7 +12,7 @@ use cqrs::{
         inmemory_command_bus::InMemoryCommandBus, inmemory_query_bus::InMemoryQueryBus,
     },
 };
-use cti::{breaches::{application::create_one::{breach_creator::BreachCreator, create_breach_command_handler::CreateBreachCommandHandler}, infrastructure::sqlx::sqlx_postgres_breach_repository::SqlxPostgresBreachRepository}, cves::{
+use cti::{breaches::{application::{create_one::{breach_creator::BreachCreator, create_breach_command_handler::CreateBreachCommandHandler}, find_one::{breach_finder::BreachFinder, find_breach_q_handler::FindBreachQueryHandler}}, infrastructure::sqlx::sqlx_postgres_breach_repository::SqlxPostgresBreachRepository}, cves::{
     application::{
         create_one::{
             create_cve_command_handler::CreateCveCommandHandler, cve_creator::CveCreator,
@@ -73,6 +73,11 @@ async fn main() -> std::io::Result<()> {
     let update_cve_cmd_handler = UpdateCveCommandHandler::new(cve_updater);
     let update_cve_cmd_handler_ref = Arc::new(update_cve_cmd_handler);
     command_bus_ref.register(update_cve_cmd_handler_ref).await;
+
+    let breach_finder = BreachFinder::new(breach_repository_ref.clone());
+    let find_breach_q_handler = FindBreachQueryHandler::new(breach_finder);
+    let find_breach_q_handler_ref = Arc::new(find_breach_q_handler);
+    query_bus_ref.register(find_breach_q_handler_ref).await;
 
     let breach_creator = BreachCreator::new(breach_repository_ref.clone(), query_bus_ref.clone(), event_bus_ref.clone());
     let create_breach_cmd_handler = CreateBreachCommandHandler::new(breach_creator);
