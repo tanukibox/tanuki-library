@@ -12,7 +12,7 @@ use cqrs::{
         inmemory_command_bus::InMemoryCommandBus, inmemory_query_bus::InMemoryQueryBus,
     },
 };
-use cti::cves::{
+use cti::{breaches::{application::create_one::{breach_creator::BreachCreator, create_breach_command_handler::CreateBreachCommandHandler}, infrastructure::sqlx::sqlx_postgres_breach_repository::SqlxPostgresBreachRepository}, cves::{
     application::{
         create_one::{
             create_cve_command_handler::CreateCveCommandHandler, cve_creator::CveCreator,
@@ -23,7 +23,7 @@ use cti::cves::{
         },
     },
     infrastructure::sqlx::sqlx_postgres_cve_repository::SqlxPostgresCveRepository,
-};
+}};
 use events::infrastructure::inmemory::inmemory_event_bus::InMemoryEventBus;
 use tracing::{self as logger};
 use v1::health::health_controller;
@@ -48,16 +48,20 @@ async fn main() -> std::io::Result<()> {
     let event_bus = InMemoryEventBus::new();
     let event_bus_ref = Arc::new(event_bus);
 
-    let mut query_bus = InMemoryQueryBus::new();
+    let query_bus = InMemoryQueryBus::new();
+    let query_bus_ref = Arc::new(query_bus);
     let mut command_bus = InMemoryCommandBus::new();
 
     let cve_repository = SqlxPostgresCveRepository::from_env().await;
     let cve_repository_ref = Arc::new(cve_repository);
 
+    let breach_repository = SqlxPostgresBreachRepository::from_env().await;
+    let breach_repository_ref = Arc::new(breach_repository);
+
     let cve_finder = CveFinder::new(cve_repository_ref.clone());
     let find_cve_q_handler = FindCveQueryHandler::new(cve_finder);
     let find_cve_q_handler_ref = Arc::new(find_cve_q_handler);
-    query_bus.register(find_cve_q_handler_ref);
+    query_bus_ref.register(find_cve_q_handler_ref).await;
 
     let cve_creator = CveCreator::new(cve_repository_ref.clone(), event_bus_ref.clone());
     let create_cve_cmd_handler = CreateCveCommandHandler::new(cve_creator);
@@ -69,7 +73,12 @@ async fn main() -> std::io::Result<()> {
     let update_cve_cmd_handler_ref = Arc::new(update_cve_cmd_handler);
     command_bus.register(update_cve_cmd_handler_ref);
 
-    let query_bus_ref: Data<Arc<dyn QueryBus>> = Data::new(Arc::new(query_bus));
+    let breach_creator = BreachCreator::new(breach_repository_ref.clone(), query_bus_ref.clone(), event_bus_ref.clone());
+    let create_breach_cmd_handler = CreateBreachCommandHandler::new(breach_creator);
+    let create_breach_cmd_handler_ref = Arc::new(create_breach_cmd_handler);
+    command_bus.register(create_breach_cmd_handler_ref);
+
+    let query_bus_ref: Data<Arc<dyn QueryBus>> = Data::new(query_bus_ref);
     let command_bus_ref: Data<Arc<dyn CommandBus>> = Data::new(Arc::new(command_bus));
 
     HttpServer::new(move || {
