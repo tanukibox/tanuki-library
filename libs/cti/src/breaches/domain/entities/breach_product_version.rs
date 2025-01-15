@@ -51,3 +51,9 @@ impl Hash for BreachProductVersion {
         self.value.hash(state);
     }
 }
+
+impl std::fmt::Display for BreachProductVersion {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self.value)
+    }
+}
