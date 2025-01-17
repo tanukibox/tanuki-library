@@ -3,6 +3,8 @@ name: RustSec
 on:
   push:
   pull_request:
+  schedule:
+    - cron: '00 6 * * *'
 
 jobs:
   audit:
